@@ -12,6 +12,9 @@ import com.example.moviesbrowse.modelViews.MovieModelView
 import com.example.moviesbrowse.models.Movie
 import com.example.moviesbrowse.screens.MainScreen
 import com.example.moviesbrowse.screens.MovieInfo
+import com.example.moviesbrowse.ui.theme.DarkGray
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 class MainActivity : ComponentActivity() {
@@ -20,6 +23,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val systemUiController: SystemUiController = rememberSystemUiController()
+            systemUiController.setSystemBarsColor(DarkGray)
             navController = rememberNavController()
             NavHost(navController = navController, startDestination = "main_page") {
                 composable("main_page") { MainScreen(context = this@MainActivity) }
