@@ -10,21 +10,21 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.moviesbrowse.MainActivity
 import com.example.moviesbrowse.elements.MovieCard
 import com.example.moviesbrowse.elements.TopBar
 import com.example.moviesbrowse.ui.theme.DarkGray
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(context: MainActivity) {
     val viewModel = context.viewModel
     val lazyGridState = rememberLazyGridState()
-    if (lazyGridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == viewModel.currentMovies.size - 1) {
-        viewModel.addPage()
-    }
     Scaffold(
         topBar = { TopBar() },
         containerColor = DarkGray
@@ -43,5 +43,11 @@ fun MainScreen(context: MainActivity) {
                 items(viewModel.currentMovies) { movie -> MovieCard(movie, context) }
             }
         }
+    }
+    LaunchedEffect(key1 = true){
+        viewModel.currentMovies = viewModel.getMovies(1).toMutableList()
+    }
+    LaunchedEffect(lazyGridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == viewModel.currentMovies.size - 1) {
+        viewModel.addPage()
     }
 }
